@@ -23,9 +23,12 @@ async function run() {
 
     try {
         app.get('/products', async (req, res) => {
+            const page = parseInt(req.query.page);
+            const size = parseInt(req.query.size);
+            console.log(page, size)
             const query = {};
             const cursor = productsCollection.find(query);
-            const products = await cursor.toArray();
+            const products = await cursor.skip(page * size).limit(size).toArray();
             const count = await productsCollection.estimatedDocumentCount();
             res.send({ count, products });
         })
