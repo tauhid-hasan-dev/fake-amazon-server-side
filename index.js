@@ -26,7 +26,8 @@ async function run() {
             const query = {};
             const cursor = productsCollection.find(query);
             const products = await cursor.toArray();
-            res.send(products);
+            const count = await productsCollection.estimatedDocumentCount();
+            res.send({ count, products });
         })
     }
     finally {
